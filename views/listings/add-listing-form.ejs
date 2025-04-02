@@ -1,0 +1,49 @@
+<% layout('/layouts/boiler-plate.ejs') %>
+<body>
+    <div class="addListingContainer">
+        <h2>Add a New Listing</h2>
+        <form action="/listings/add" method="POST" class="needs-validation" novalidate>
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="listing[title]" class="form-control" required>
+            <div class="invalid-feedback">Please provide a title.</div>
+
+            <label for="price">Price (INR):</label>
+            <input type="number" id="price" name="listing[price]" class="form-control" required>
+            <div class="invalid-feedback">Please provide a valid price.</div>
+
+            <label for="image">Image URL:</label>
+            <input type="url" id="image" name="listing[image]" class="form-control" >
+            <div class="invalid-feedback">Please provide a valid image URL.</div>
+
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="listing[location]" class="form-control" required>
+            <div class="invalid-feedback">Please provide a location.</div>
+
+            <label for="country">Country:</label>
+            <input type="text" id="country" name="listing[country]" class="form-control" required>
+            <div class="invalid-feedback">Please provide a country.</div>
+
+            <label for="description">Description:</label>
+            <textarea id="description" name="listing[description]" rows="5" class="form-control" required></textarea>
+            <div class="invalid-feedback">Please provide a description.</div>
+
+            <button type="submit" class="btn btn-primary">Add Listing</button>
+        </form>
+    </div>
+</body>
+
+
+<!--
+we are sending data in form of object insted of key value pairs : 
+{
+  "listing": {
+    "title": "Some Title",
+    "description": "Some description...",
+    "location": "Some City",
+    "country": "Some Country",
+    "price": 100,
+    "image": "some-url.jpg"
+  }
+}
+in above format data is being sent
+-->

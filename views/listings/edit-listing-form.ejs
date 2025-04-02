@@ -1,0 +1,14 @@
+<% layout('/layouts/boiler-plate.ejs') %>
+<body>
+    <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" >
+        <input type="text" name="title" value="<%= listing.title %>" required>
+        <input type="text" name="description" value="<%= listing.description %>" required>
+        <input type="number" name="price" value="<%= listing.price %>" required>
+        <input type="text" name="image" value="<%= listing.image %>" required>
+        <input type="text" name="location" value="<%= listing.location %>" required>
+        <input type="text" name="country" value="<%= listing.country %>" required>
+
+        <button type="submit">Update Listing</button>
+    </form>
+</body>
+</html>
