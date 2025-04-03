@@ -1,4 +1,3 @@
-### Add Listing API Test
 POST https://8080-idx-wanderer-1742544892672.cluster-fu5knmr55rd44vy7k7pxk74ams.cloudworkstations.dev/listings/add
 Authorization: Bearer mysecretcodehere
 {
