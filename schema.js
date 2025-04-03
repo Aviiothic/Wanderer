@@ -8,7 +8,7 @@ import Joi from "joi";
 // Suggested code may be subject to a license. Learn more: ~LicenseLog:1619490636.
 const listingSchema = Joi.object({
     title: Joi.string().min(5).max(30).required(),
-    description: Joi.string().min(10).max(1000).required(),
+    description: Joi.string().min(10).max(1200).required(),
     location: Joi.string().required(),
     country: Joi.string().required(),
     price: Joi.number().min(0).required(),

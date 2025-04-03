@@ -1,7 +1,6 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 import Listing from '../models/listing-model.js';
-import Review from '../models/review-model.js';
 import wrapAsync from '../utils/wrap-async.js';
 import AppError from '../utils/error-util.js';
 
@@ -59,7 +58,6 @@ const addListing = wrapAsync(async (req, res, next) => {
     // res.status(201).json({ success: true, listing: newListing }); // ✅ Sends JSON response
 });
 
-
 //aage wale me try catch hi rhne diya hu kon itna mehnat kre
 const editListingForm = async(req,res,next)=>{
     try{
@@ -107,22 +105,6 @@ const deleteListing = async (req, res, next) => {
 };
 
 
-const storeReviews = async(req,res,next)=>{
-    try{
-        const listingId= req.params.id;
-        const newReview = new Review(req.body.review);
-        const listing = await Listing.findById(listingId);
-        listing.reviews.push(newReview);
-        
-        await newReview.save();
-        await listing.save();
-        res.redirect(`/listings/${listingId}`);
-    }catch(error){
-        console.error('Storing Reviews :', error);
-        res.status(500).send('Internal Server Error');
-    }
-}
-
 export{
     showAllListings,
     showSingleListing,
@@ -130,8 +112,7 @@ export{
     addListing,
     editListingForm,
     updateListing,
-    deleteListing,
-    storeReviews
+    deleteListing
 }
 
 /*we use joi for server side validation

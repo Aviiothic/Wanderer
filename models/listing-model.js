@@ -15,7 +15,7 @@ const listingSchema = new Schema(
       type: String,
       required: [true, "Description is required"],
       minLength: [10, "Description should not be less than 10 chars"],
-      maxLength: [120, "Description should not be more than 120 chars"],
+      maxLength: [1200, "Description should not be more than 1200 chars"],
     },
     image: {
       type: String

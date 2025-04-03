@@ -1,6 +1,7 @@
 import express from 'express';
 import connectMongoDb from './configs/database-connection.js';
 import listingRoutes from './routes/listing-routes.js';
+import reviewRoutes from './routes/review-routes.js';
 import applyCommonMiddlewares from './middlewares/common-middlewares.js';
 import AppError from './utils/error-util.js';
 
@@ -16,6 +17,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/listings', listingRoutes);  // Mount listing routes
+app.use('/listings', reviewRoutes);   //mount review routes
 
 //Catch-all 404 handler for unmatched routes
 app.all('*', (req, res, next) => {
