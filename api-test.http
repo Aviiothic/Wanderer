@@ -1,0 +1,15 @@
+### Add Listing API Test
+POST https://8080-idx-wanderer-1742544892672.cluster-fu5knmr55rd44vy7k7pxk74ams.cloudworkstations.dev/listings/add
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2Nsb3VkLmdvb2dsZS5jb20vd29ya3N0YXRpb25zIiwiYXVkIjoiaWR4LXdhbmRlcmVyLTE3NDI1NDQ4OTI2NzIuY2x1c3Rlci1mdTVrbm1yNTVyZDQ0dnk3azdweGs3NGFtcy5jbG91ZHdvcmtzdGF0aW9ucy5kZXYiLCJpYXQiOjE3NDM2MTQ2NTksImV4cCI6MTc0MzcwMTA1OX0.P1whHMBA0En0C79t3ugtyHoKAqmWAfleL-hErbNUO1CrDyX0naxUJHEHBJaqh8iu_F2e7QT0frQNfhnln-umkh-YVDXzgI_-kBHi-wkX35LAnATlSZeu3UDZ-XLcazhjzw0ZVrQLdjokzHbW8AhSDfPc7zxeYGQ--YdabK28ehlE0BiKiTuiXqgapIOv47aIkYMjPz050NVnNZ7uUHe84j5xJifW3We4M9AmWWlnpE5QLJTjYiXYLZhTfsP-oUk3cZk_OwZeBo_bANfYh51FFjTGXHQQIi8JDHTRLT8e_W8eH3lbT3hdmOyyIjrJPWmjtuDkMCWbafQVo6YWXrRoIg
+Content-Type: application/json
+//authorization me temporary token bhejna pdta hai, aur wo idx se generate kr skye hai
+{
+  "listing": {
+    "title": "Some Title",
+    "description": "Some description...",
+    "location": "Some City",
+    "country": "Some Country",
+    "price": 100,
+    "image": ""
+  }
+}

@@ -6,6 +6,9 @@ import wrapAsync from '../utils/wrap-async.js';
 import AppError from '../utils/error-util.js';
 
 
+const defaultImage =
+  "https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -39,14 +42,23 @@ const addListingForm = wrapAsync(async(req, res, next)=>{
         res.render('listings/add-listing-form.ejs');
 })
 
-const addListing = wrapAsync(async(req, res, next)=>{
-        if(!req.body.listing){
-            throw new AppError(400, 'Listing is required');
-        }
-        const newListing = new Listing(req.body.listing);
-        await newListing.save();
-        res.redirect(`/listings/${newListing._id}`); // ✅ Correct
-})
+const addListing = wrapAsync(async (req, res, next) => {
+    if (!req.body.listing) {
+        throw new AppError(400, "Listing is required");
+    }
+
+    // Ensure default image is set if image field is empty
+    if (!req.body.listing.image || req.body.listing.image.trim() === "") {
+        req.body.listing.image = defaultImage;
+    }
+
+    const newListing = new Listing(req.body.listing);
+    await newListing.save();
+    
+    res.redirect(`/listings/${newListing._id}`); // ✅ Redirects after successful save
+    // res.status(201).json({ success: true, listing: newListing }); // ✅ Sends JSON response
+});
+
 
 //aage wale me try catch hi rhne diya hu kon itna mehnat kre
 const editListingForm = async(req,res,next)=>{

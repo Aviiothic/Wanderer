@@ -13,6 +13,5 @@ const validateListing = (req, res, next) => {
 };
 
 
-
 export default validateListing;
 

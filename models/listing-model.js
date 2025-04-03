@@ -2,8 +2,6 @@
 import { Schema, model } from "mongoose";
 import Review from "./review-model.js";
 
-const defaultImage =
-  "https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
 const listingSchema = new Schema(
   {
@@ -20,8 +18,12 @@ const listingSchema = new Schema(
       maxLength: [120, "Description should not be more than 120 chars"],
     },
     image: {
-      type: String,
-      default: defaultImage, // ✅ Default image is set here
+      type: String
+      /*
+      we are not using below code because we are handling this in our controller and hence no need to do this here
+      set: (v) => (v.trim() === "" ? defaultImage : v), // Ensures empty strings become the default
+      default: defaultImage, // if we don't use above lilne then it will apply only when the image is undefined not empty("")
+      */
     },
     price: {
       type: Number,
