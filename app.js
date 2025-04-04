@@ -16,8 +16,17 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
+// app.use((req, res, next) => {
+//   console.log(`[${req.method}] ${req.path}`);
+//   next();
+// });
+//above code is used to log all requests coming on the site on the terminal
+//quite helpful in debugging
+
+
 app.use('/listings', listingRoutes);  // Mount listing routes
-app.use('/listings', reviewRoutes);   //mount review routes
+app.use('/listings/:id/reviews', reviewRoutes); //mounting review routes
+
 
 //Catch-all 404 handler for unmatched routes
 app.all('*', (req, res, next) => {

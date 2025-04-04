@@ -1,12 +1,22 @@
 <% layout('/layouts/boiler-plate.ejs') %>
 <body>
-    <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" >
+    <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" class="needs-validation" novalidate >
         <input type="text" name="title" value="<%= listing.title %>" required>
+        <div class="invalid-feedback">Please provide a title.</div>
+
         <input type="text" name="description" value="<%= listing.description %>" required>
+        <div class="invalid-feedback">Please provide a description.</div>
+
         <input type="number" name="price" value="<%= listing.price %>" required>
-        <input type="text" name="image" value="<%= listing.image %>" required>
+        <div class="invalid-feedback">Please provide the price.</div>
+
+        <input type="text" name="image" value="<%= listing.image %>" >
+
         <input type="text" name="location" value="<%= listing.location %>" required>
+        <div class="invalid-feedback">Please provide the location of listing.</div>
+
         <input type="text" name="country" value="<%= listing.country %>" required>
+        <div class="invalid-feedback">Please provide the country.</div>
 
         <button type="submit">Update Listing</button>
     </form>

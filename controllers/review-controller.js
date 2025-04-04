@@ -15,7 +15,8 @@ const storeReviews = wrapAsync(async (req, res, next) => {
     await newReview.save();
     await listing.save();
 
-    res.redirect(`/listings/${listingId}`);
+    //res.redirect(`/listings/${listingId}`);
+    res.status(201).json({ success: true, review: newReview })
 });
 
 export {

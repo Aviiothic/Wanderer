@@ -54,8 +54,8 @@ const addListing = wrapAsync(async (req, res, next) => {
     const newListing = new Listing(req.body.listing);
     await newListing.save();
     
-    res.redirect(`/listings/${newListing._id}`); // ✅ Redirects after successful save
-    // res.status(201).json({ success: true, listing: newListing }); // ✅ Sends JSON response
+    //res.redirect(`/listings/${newListing._id}`); // ✅ Redirects after successful save
+     res.status(201).json({ success: true, listing: newListing }); // ✅ Sends JSON response
 });
 
 //aage wale me try catch hi rhne diya hu kon itna mehnat kre
@@ -77,6 +77,9 @@ const editListingForm = async(req,res,next)=>{
 const updateListing = async(req,res,next)=>{
     try{
         const listingId = req.params.id;
+        if (!req.body.image || req.body.image.trim() === "") {
+            req.body.image = defaultImage;
+        }
         const updatedListing = await Listing.findByIdAndUpdate(listingId, req.body, {new: true}); // new true return updated value
         if(!updatedListing){
             return res.status(404).send('Listing not found');
