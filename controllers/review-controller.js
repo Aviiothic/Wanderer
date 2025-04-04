@@ -15,10 +15,33 @@ const storeReviews = wrapAsync(async (req, res, next) => {
     await newReview.save();
     await listing.save();
 
-    //res.redirect(`/listings/${listingId}`);
-    res.status(201).json({ success: true, review: newReview })
+    res.redirect(`/listings/${listingId}`);
+    //res.status(201).json({ success: true, review: newReview })
 });
 
+const deleteReview = wrapAsync(async (req,res, next)=>{
+    let {id, reviewId} = req.params;
+    // console.log(req.params);
+    // console.log(id, reviewId);
+
+    const listing = await Listing.findById(id);
+    if(!listing){
+        return res.status(404).send('Listing not fund');
+    }
+    
+    const review = await Review.findById(reviewId);
+    if(!review){
+        return res.status(404).send('Review not found');
+    }
+
+    await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+    await Review.findByIdAndDelete(reviewId);
+
+    res.redirect(`/listings/${id}`);
+
+})
+
 export {
-    storeReviews
+    storeReviews,
+    deleteReview
 }

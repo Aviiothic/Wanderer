@@ -29,7 +29,7 @@ const showAllListings = async(req,res,next)=>{
 const showSingleListing = wrapAsync(async(req, res, next)=>{
 
         const listingId = req.params.id;
-        const listing = await Listing.findById(listingId);
+        const listing = await Listing.findById(listingId).populate("reviews");
         if(!listing){
             return res.status(404).send('Listing not found');
         }
