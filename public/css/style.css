@@ -103,7 +103,7 @@ button {
     border-radius: 5px;
     cursor: pointer;
 }
-button:hover {
+form-button:hover {
     background-color: #219150;
 }
 
@@ -189,4 +189,12 @@ h2 {
     .btn {
         width: 100%;
     }
+}
+
+.card-btn {
+    width: fit-content;
+    height: fit-content;
+    padding: 5px;
+    margin: 0.5rem;
+    font-size: small;
 }

@@ -47,6 +47,32 @@ const listingSchema = new Schema(
   { timestamps: true }
 );
 
-const Listing = model("Listing", listingSchema);
+//defining middleware to delete reviews related with the listing
 
+//pre middleware
+// listingSchema.pre("remove", async function (next) {
+//   try {
+//     await Review.deleteMany({ _id: { $in: this.reviews } });
+//     next();
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+
+
+//post middleware
+listingSchema.post("findOneAndDelete", async function (listing) {
+  try {
+    if (listing) {
+      await Review.deleteMany({ _id: { $in: listing.reviews } });
+    }
+  } catch (err) {
+    console.error("Error deleting associated reviews:", err);
+  }
+});
+
+
+
+
+const Listing = model("Listing", listingSchema);
 export default Listing;
