@@ -54,8 +54,10 @@ const addListing = wrapAsync(async (req, res, next) => {
     const newListing = new Listing(req.body.listing);
     await newListing.save();
     
-    //res.redirect(`/listings/${newListing._id}`); // ✅ Redirects after successful save
-     res.status(201).json({ success: true, listing: newListing }); // ✅ Sends JSON response
+    req.flash("success", "New Listing Created! ");
+
+    res.redirect(`/listings/${newListing._id}`); // ✅ Redirects after successful save
+    //res.status(201).json({ success: true, listing: newListing }); // ✅ Sends JSON response
 });
 
 //aage wale me try catch hi rhne diya hu kon itna mehnat kre

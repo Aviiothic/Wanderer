@@ -3,10 +3,12 @@ import connectMongoDb from './configs/database-connection.js';
 import listingRoutes from './routes/listing-routes.js';
 import reviewRoutes from './routes/review-routes.js';
 import applyCommonMiddlewares from './middlewares/common-middlewares.js';
-import AppError from './utils/error-util.js';
+import { notFoundHandler, globalErrorHandler } from './middlewares/error-handler.js';
+
 
 const app = express();
 applyCommonMiddlewares(app);
+
 const dbUrl = 'mongodb://localhost:27017/wanderer';
 
 //connecting to mongodb database 
@@ -26,22 +28,8 @@ app.get('/', (req, res) => {
 
 app.use('/listings', listingRoutes);  // Mount listing routes
 app.use('/listings/:id/reviews', reviewRoutes); //mounting review routes
-
-
-//Catch-all 404 handler for unmatched routes
-app.all('*', (req, res, next) => {
-  next(new AppError(404, 'OOPS! Page not found'));
-})
-
-app.use((err,req,res,next)=>{
-  let { statusCode, message } = err;
-  if (!statusCode) {
-    statusCode = 500;
-    message = 'Internal Server Error';
-  }
-  //res.status(statusCode).send(message);
-  res.status(statusCode).render("error.ejs", {err});
-});
+app.all('*', notFoundHandler);
+app.use(globalErrorHandler);
 
 
 export default app;
