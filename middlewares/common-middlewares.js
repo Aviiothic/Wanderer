@@ -42,10 +42,11 @@ function applyCommonMiddlewares(app) {
     app.engine('ejs', ejsMate);  // Use EJS as the view engine for layouts or partials
     // app.use(express.static(publicPath)); //to use static files like css and js
     app.use(session(sessionOptions));   //to use sessions on server side
+    app.use(passport.initialize());
+    app.use(passport.session());//sets req.user hence above flash and flash middleware will work
     app.use(flash()); //to show flash messages
     app.use(flashMiddleware);
-    app.use(passport.initialize());
-    app.use(passport.session());
+    
 }
 
 export default applyCommonMiddlewares;

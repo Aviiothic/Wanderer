@@ -4,7 +4,6 @@ import Listing from "../models/listing-model.js";
 import User from "../models/user-model.js";
 import wrapAsync from "../utils/wrap-async.js";
 import AppError from "../utils/error-util.js";
-import passport from "passport";
 
 const defaultImage =
   "https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
@@ -120,30 +119,39 @@ const addUserForm = wrapAsync(async (req, res, next) => {
 });
 
 const addUser = wrapAsync(async (req, res, next) => {
-    let { username, email, password } = req.body;
-    const newUser = new User({ username, email });
-    const registeredUser = await User.register(newUser, password);
+  let { username, email, password } = req.body;
+  const newUser = new User({ username, email });
+  const registeredUser = await User.register(newUser, password);
 
-    //console.log(registeredUser);
+  //console.log(registeredUser);
+
+  req.login(registeredUser, (err) => {
+    if (err) {
+      return next(err);
+    }
     req.flash("success", "New User Created! ");
     res.redirect("/listings");
+  });
 });
 
 const loginPage = (req, res, next) => {
-    res.render("users/user-login.ejs");
-  };  
+  res.render("users/user-login.ejs");
+};
 
-const loginUser = passport.authenticate("local", {
-  successRedirect: "/listings",
-  errorRedirect: "/listings/login",
-  successFlash: true,
-  errorFlash: true,
-});
+const loginUser = (req, res) => {
+  req.flash("success", "Welcome back champ !");
+  res.redirect(res.locals.redirectUrl);
+};
 
-
-
-  
-
+const logoutUser = (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    req.flash("success", "User Successfully Logged Out");
+    res.redirect("/listings");
+  });
+};
 
 export {
   showAllListings,
@@ -156,7 +164,8 @@ export {
   addUserForm,
   addUser,
   loginPage,
-  loginUser
+  loginUser,
+  logoutUser,
 };
 
 /*we use joi for server side validation

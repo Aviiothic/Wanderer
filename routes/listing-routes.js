@@ -10,11 +10,13 @@ import {
   addUserForm,
   addUser,
   loginPage,
-  loginUser
+  loginUser,
+  logoutUser
 } from '../controllers/listing-controllers.js';
 
 import validateListing from "../middlewares/validate-listing.js";
-import { isLoggedIn } from "../middlewares/authentication.js";
+import { isLoggedIn, authenticateUser, saveRedirectUrl } from "../middlewares/authentication.js";
+
 
 
 const router = Router();
@@ -26,7 +28,8 @@ router.post('/signUp',addUser);
 
 router.get('/new', isLoggedIn, addListingForm); // Show form to add a new listing
 router.get('/login', loginPage); // Login Page
-router.post('/logIn', loginUser); // Login User
+router.get('/logout', isLoggedIn, logoutUser);
+router.post('/logIn', saveRedirectUrl, authenticateUser, loginUser); // Login User
 
 router.post('/add', isLoggedIn, validateListing, addListing); //to add a new listing
 
