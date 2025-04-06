@@ -2,12 +2,15 @@ import express from 'express';
 import connectMongoDb from './configs/database-connection.js';
 import listingRoutes from './routes/listing-routes.js';
 import reviewRoutes from './routes/review-routes.js';
+import userRoutes from './routes/user-routes.js';
 import applyCommonMiddlewares from './middlewares/common-middlewares.js';
 import { notFoundHandler, globalErrorHandler } from './middlewares/error-handler.js';
 
 
+
 const app = express();
 applyCommonMiddlewares(app);
+
 
 const dbUrl = 'mongodb://localhost:27017/wanderer';
 
@@ -27,6 +30,7 @@ app.get('/', (req, res) => {
 
 
 app.use('/listings', listingRoutes);  // Mount listing routes
+app.use('/listings/user', userRoutes);  // Mount user routes
 app.use('/listings/:id/reviews', reviewRoutes); //mounting review routes
 app.all('*', notFoundHandler);
 app.use(globalErrorHandler);

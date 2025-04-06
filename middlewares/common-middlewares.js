@@ -6,6 +6,15 @@ import ejsMate from 'ejs-mate';
 import session from 'express-session';
 import flash from 'express-flash';
 import flashMiddleware from './flash-middleware.js';
+import './passport-config.js';  // configures the singleton instance, runs the file instead of importing in one variable
+import passport from 'passport';
+/*
+“It may be that we are importing passport for the first time in 
+common-middlewares.js, but before this we have already imported 
+passport inside configure-passport.js. So after configuration, 
+if we import passport anywhere else, we get the same configured 
+passport, because it’s singleton in property.”
+*/
 
 
 // Get __dirname equivalent in ES module
@@ -35,6 +44,8 @@ function applyCommonMiddlewares(app) {
     app.use(session(sessionOptions));   //to use sessions on server side
     app.use(flash()); //to show flash messages
     app.use(flashMiddleware);
+    app.use(passport.initialize());
+    app.use(passport.session());
 }
 
 export default applyCommonMiddlewares;

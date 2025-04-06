@@ -7,14 +7,26 @@ import {
   editListingForm,
   updateListing,
   deleteListing,
+  addUserForm,
+  addUser,
+  loginPage,
+  loginUser
 } from '../controllers/listing-controllers.js';
 
 import validateListing from "../middlewares/validate-listing.js";
+import passport from "passport";
+
 
 const router = Router();
 
+
 router.get('/', showAllListings); // Get all listings
+router.get('/signup', addUserForm); // SignUp User Form
+router.post('/signUp',addUser);
+
 router.get('/new', addListingForm); // Show form to add a new listing
+router.get('/login', loginPage); // Login Page
+router.post('/logIn', loginUser); // Login User
 
 router.post('/add', validateListing, addListing); //to add a new listing
 

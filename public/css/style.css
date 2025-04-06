@@ -1,5 +1,15 @@
-body {
+/* GLOBAL RESET */
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
     font-family: "Poppins", sans-serif;
+}
+
+/* MAIN CONTENT AREA */
+main {
+    flex: 1;
 }
 
 /* Navbar */
@@ -15,6 +25,16 @@ body {
 
 .nav-link {
     color: #222222 !important;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    height: 8rem;
+    background-color: #ebebeb;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .f-info-links a {
@@ -38,18 +58,7 @@ body {
     margin-right: 1rem;
 }
 
-.f-info {
-    text-align: center;
-    height: 8rem;
-    background-color: #ebebeb;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: space-evenly;
-}
-
-
-/* styling for cards */
+/* Cards */
 .listing-card {
     border: none;
     margin-bottom: 2rem;
@@ -66,16 +75,16 @@ body {
     padding: 0px;
 }
 
-.card-text p{
+.card-text p {
     font-weight: 400;
 }
-  
-  /* Card Effect */
+
 .card:hover {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px;
-    img {
-        opacity: 0.8;
-    }
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px;
+}
+
+.card:hover img {
+    opacity: 0.8;
 }
 
 /* Add New Listing Form */
@@ -87,6 +96,7 @@ body {
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
+
 input, textarea {
     width: 100%;
     padding: 8px;
@@ -94,6 +104,7 @@ input, textarea {
     border: 1px solid #ccc;
     border-radius: 5px;
 }
+
 button {
     width: 100%;
     padding: 10px;
@@ -103,12 +114,12 @@ button {
     border-radius: 5px;
     cursor: pointer;
 }
-form-button:hover {
+
+button:hover {
     background-color: #219150;
 }
 
-/* add styles fotrthe show single listing page */
-
+/* Show Single Listing Page */
 .containerSl {
     padding: 2rem;
     border-radius: 10px;
@@ -172,29 +183,31 @@ h2 {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-@media (max-width: 768px) {
-    .main-container {
-        width: 95%;
-    }
-    
-    .container {
-        padding: 20px;
-    }
-    
-    .btn-container {
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .btn {
-        width: 100%;
-    }
-}
-
+/* Card Buttons */
 .card-btn {
     width: fit-content;
     height: fit-content;
     padding: 5px;
     margin: 0.5rem;
     font-size: small;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .main-container {
+        width: 95%;
+    }
+
+    .container {
+        padding: 20px;
+    }
+
+    .btn-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn {
+        width: 100%;
+    }
 }
