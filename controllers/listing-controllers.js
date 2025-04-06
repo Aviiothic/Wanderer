@@ -31,7 +31,9 @@ const showSingleListing = wrapAsync(async(req, res, next)=>{
         const listingId = req.params.id;
         const listing = await Listing.findById(listingId).populate("reviews");
         if(!listing){
-            return res.status(404).send('Listing not found');
+            //return res.status(404).send('Listing not found');
+            req.flash("failure", "The Listing You Requested Does not Exists! ");
+            return res.redirect('/listings');
         }
         res.render('listings/show-single-listing', {listing});
 })
@@ -86,6 +88,7 @@ const updateListing = async(req,res,next)=>{
         if(!updatedListing){
             return res.status(404).send('Listing not found');
         }
+        req.flash("success", "Listing Updated! ");
         res.redirect(`/listings/${updatedListing._id}`);
     }catch(error){
         console.error('Updating Listing :', error);
@@ -101,7 +104,7 @@ const deleteListing = async (req, res, next) => {
         if (!listing) {
             return res.status(404).send('Listing not found');
         }
-        
+        req.flash("success", "Listing Deleted! ");
         res.redirect('/listings');
     } catch (error) {
         console.error('Deleting Listing:', error);
