@@ -39,9 +39,9 @@ const showSingleListing = wrapAsync(async (req, res, next) => {
 });
 
 //form to add listings
-const addListingForm = wrapAsync(async (req, res, next) => {
+const addListingForm = (req, res, next) => {
   res.render("listings/add-listing-form.ejs");
-});
+};
 
 const addListing = wrapAsync(async (req, res, next) => {
   if (!req.body.listing) {
