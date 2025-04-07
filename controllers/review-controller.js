@@ -5,6 +5,7 @@ import wrapAsync from '../utils/wrap-async.js';
 const storeReviews = wrapAsync(async (req, res, next) => {
     const listingId = req.params.id;
     const newReview = new Review(req.body.review);
+    newReview.author = req.user._id;
 
     const listing = await Listing.findById(listingId);
     if (!listing) {

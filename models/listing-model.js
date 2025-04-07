@@ -1,7 +1,6 @@
 //importing only schema and model not the whole mongoose
 import { Schema, model } from "mongoose";
 import Review from "./review-model.js";
-import User from "./user-model.js";
 
 
 const listingSchema = new Schema(

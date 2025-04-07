@@ -6,6 +6,7 @@ to req.isAuthenticated() and req.user — no need to import Passport again.
 
 import passport from "passport"; //needed due to passport.authenticate 
 import Listing from "../models/listing-model.js";
+import Review from "../models/review-model.js";
 
 
 const authenticateUser = passport.authenticate("local", {
@@ -70,9 +71,21 @@ const isListingOwner = async (req, res, next) => {
     next();
   };
 
+const isReviewAuthor = async(req,res,next)=>{
+  let {id, reviewId} = req.params;
+  let review = await Review.findById(reviewId);
+  if(!review.author.equals(res.locals.currUser._id)){
+    req.flash("error", "You are not authorized to do that.");
+    //return res.redirect(`/listings/${id}`);
+  }
+  next();
+}
+
+
 export{
     isLoggedIn,
     authenticateUser,
     saveRedirectUrl,
-    isListingOwner
+    isListingOwner,
+    isReviewAuthor
 }
