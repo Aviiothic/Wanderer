@@ -1,47 +1,61 @@
 <% layout('/layouts/boiler-plate.ejs') %>
-<%- include("../includes/flash.ejs") %>
-<body>
-    <div class="main-container">
+  <%- include("../includes/flash.ejs") %>
+
+    <body>
+      <div class="main-container">
         <div class="containerSl">
-            <img class="listing-img" src="<%= listing.image %>" alt="<%= listing.title %>">
-            <h2><%= listing.title %></h2>
-            <p class="details"><%= listing.description %></p>
-            <p class="price">Price: &#8377; <%= listing.price.toLocaleString('en-IN') %></p>
-            <p class="details">Location: <%= listing.location %>, <%= listing.country %></p>
-            
+          <img class="listing-img" src="<%= listing.image %>" alt="<%= listing.title %>">
+          <h2>
+            <%= listing.title %>
+          </h2>
+          <h3 class="details">Owner : <%= listing.owner.username %>
+          </h3>
+          <p class="details">
+            <%= listing.description %>
+          </p>
+          <p class="price">Price: &#8377; <%= listing.price.toLocaleString('en-IN') %>
+          </p>
+          <p class="details">Location: <%= listing.location %>, <%= listing.country %>
+          </p>
+
+          <% if(currUser && currUser._id.equals(listing.owner._id)) { %>
             <div class="btn-container">
-                <form action="/listings/<%= listing._id %>/edit" method="GET">
-                    <button class="btn btn-primary">Edit Listing</button>
-                </form>
-                <form action="/listings/<%= listing._id %>?_method=Delete" method="POST">
-                    <button class="btn btn-danger">Delete Listing</button>
-                </form>
+              <form action="/listings/<%= listing._id %>/edit" method="GET">
+                <button class="btn btn-primary">Edit Listing</button>
+              </form>
+              <form action="/listings/<%= listing._id %>?_method=Delete" method="POST">
+                <button class="btn btn-danger">Delete Listing</button>
+              </form>
             </div>
+          <% } %>
         </div>
         <hr>
         <div>
-            <h4 style="text-align: center; margin-bottom: 20px;">All Reviews</h4>
-            <div class="row justify-content-center g-4">
-                <% listing.reviews.forEach(function (review) { %>
-                  <div class="col-md-4 d-flex">
-                    <div class="card flex-fill">
-                      <div class="card-body">
-                        <h5 class="card-title ms-2">Username</h5>
-                        <p class="card-text ms-2"><%= review.comment %></p>
-                        <p class="card-text ms-2">Rating: <%= review.rating %> Stars</p>
-                      </div>
-                      <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
-                        <button class="btn btn-danger card-btn">Delete</form>
-                    </div>
+          <h4 style="text-align: center; margin-bottom: 20px;">All Reviews</h4>
+          <div class="row justify-content-center g-4">
+            <% listing.reviews.forEach(function (review) { %>
+              <div class="col-md-4 d-flex">
+                <div class="card flex-fill">
+                  <div class="card-body">
+                    <h5 class="card-title ms-2">Username</h5>
+                    <p class="card-text ms-2">
+                      <%= review.comment %>
+                    </p>
+                    <p class="card-text ms-2">Rating: <%= review.rating %> Stars</p>
                   </div>
-                <% }) %>
-              </div> 
+                  <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                    <button class="btn btn-danger card-btn">Delete
+                  </form>
+                </div>
+              </div>
+              <% }) %>
+          </div>
         </div>
-                
-            
-        </div>
-        <div class="containerSl">
-            <%- include("../includes/review-form") %>
-        </div>
-    </div>
-</body>
+
+
+      </div>
+      <div class="containerSl">
+        <%- include("../includes/review-form") %>
+      </div>
+      </div>
+    </body>

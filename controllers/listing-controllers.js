@@ -28,7 +28,9 @@ const showAllListings = async (req, res, next) => {
 //show particlular listing with id
 const showSingleListing = wrapAsync(async (req, res, next) => {
   const listingId = req.params.id;
-  const listing = await Listing.findById(listingId).populate("reviews");
+  const listing = await Listing.findById(listingId)
+    .populate("owner")
+    .populate("reviews");
   if (!listing) {
     //return res.status(404).send('Listing not found');
     req.flash("error", "The Listing You Requested Does not Exists! ");
@@ -53,6 +55,7 @@ const addListing = wrapAsync(async (req, res, next) => {
   }
 
   const newListing = new Listing(req.body.listing);
+  newListing.owner = req.user._id;
   await newListing.save();
 
   req.flash("success", "New Listing Created! ");
@@ -82,14 +85,18 @@ const updateListing = async (req, res, next) => {
     if (!req.body.image || req.body.image.trim() === "") {
       req.body.image = defaultImage;
     }
+
     const updatedListing = await Listing.findByIdAndUpdate(
       listingId,
       req.body,
       { new: true }
     ); // new true return updated value
+
     if (!updatedListing) {
-      return res.status(404).send("Listing not found");
+      req.flash("error", "Listing not found.");
+      return res.redirect("/listings");
     }
+
     req.flash("success", "Listing Updated! ");
     res.redirect(`/listings/${updatedListing._id}`);
   } catch (error) {
@@ -140,7 +147,10 @@ const loginPage = (req, res, next) => {
 
 const loginUser = (req, res) => {
   req.flash("success", "Welcome back champ !");
-  res.redirect(res.locals.redirectUrl);
+  let redirectUrl = res.locals.redirectUrl || "/listings";
+  //agar undefined hua ya pehle se hi logged in hai to /listings pe jayega login krne pe
+  //console.log(redirectUrl);
+  res.redirect(redirectUrl);
 };
 
 const logoutUser = (req, res, next) => {

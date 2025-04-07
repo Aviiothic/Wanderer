@@ -5,6 +5,8 @@ to req.isAuthenticated() and req.user — no need to import Passport again.
 */
 
 import passport from "passport"; //needed due to passport.authenticate 
+import Listing from "../models/listing-model.js";
+
 
 const authenticateUser = passport.authenticate("local", {
   failureRedirect: "/listings/login",
@@ -38,9 +40,39 @@ const saveRedirectUrl = (req,res,next)=>{
     next();
 }
 
+const isListingOwner = async (req, res, next) => {
+    const { id } = req.params;
+   
+    const listing = await Listing.findById(id);
+    if (!listing) {
+      req.flash("error", "Listing not found.");
+      return res.redirect("/listings");
+    }
+  /* 
+    below we are directly comparing owner with currUser.id not owner.id with currUser.id
+    this is because Mongoose automatically casts certain fields to ObjectId when needed. 
+    If you did not populate the owner, currListing.owner is just an ObjectId, not the full user object.
+    If you did populate the owner using .populate('owner'), then currListing.owner becomes a full user document. 
+    And in that case we will have to compare the ids of the two objects.
+    
+  */
+    if (!listing.owner.equals(res.locals.currUser._id)) {
+      req.flash("error", "You are not authorized to do that.");
+      return res.redirect(`/listings/${id}`);
+    }
+  
+    // Attach listing to request if needed later
+    req.listing = listing;
+    /*isse fayda ye hai ki aage wale controller aur middleware me hmko lilsting dhundhne
+    ka jarurat nhi hai. isse hamara number of database queries reduce hoga aur website fast bnega
+    ek hi cheez ke liye bar bar query krne se accha hai is use req ya res me attach kr do, aur aage use krlo
+    */
+    next();
+  };
 
 export{
     isLoggedIn,
     authenticateUser,
-    saveRedirectUrl
+    saveRedirectUrl,
+    isListingOwner
 }
