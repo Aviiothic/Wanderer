@@ -4,7 +4,7 @@
     <body>
       <div class="main-container">
         <div class="containerSl">
-          <img class="listing-img" src="<%= listing.image %>" alt="<%= listing.title %>">
+          <img class="listing-img" src="<%= listing.image.url %>" alt="<%= listing.title %>">
           <h2>
             <%= listing.title %>
           </h2>
@@ -40,10 +40,12 @@
                 <div class="card flex-fill">
                   <div class="card-body">
                     <h5 class="card-title ms-2">@<%=review.author.username%></h5>
+                    <p class="starability-result card-text ms-2" data-rating="<%= review.rating %>">
+                    </p>
                     <p class="card-text ms-2">
                       <%= review.comment %>
                     </p>
-                    <p class="card-text ms-2">Rating: <%= review.rating %> Stars</p>
+                    <!-- <p class="card-text ms-2">Rating: <%= review.rating %> Stars</p> -->
                   </div>
                   <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
                     <button class="btn btn-danger card-btn">Delete

@@ -4,7 +4,6 @@ import AppError from "../utils/error-util.js";
 const notFoundHandler = (req, res, next) => {
   next(new AppError(404, "OOPS! Page not found"));
 }
-
 // Error handling middleware
 const globalErrorHandler = (err, req, res, next) => {
   let { statusCode, message } = err;

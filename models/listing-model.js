@@ -17,8 +17,9 @@ const listingSchema = new Schema(
       minLength: [10, "Description should not be less than 10 chars"],
       maxLength: [1200, "Description should not be more than 1200 chars"],
     },
-    image: {
-      type: String
+    image: {  //we can create an array image [{url,name}] if we want to have multiple images
+      url: String,
+      filename: String,
       /*
       we are not using below code because we are handling this in our controller and hence no need to do this here
       set: (v) => (v.trim() === "" ? defaultImage : v), // Ensures empty strings become the default

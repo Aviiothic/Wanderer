@@ -54,13 +54,16 @@ const addListing = wrapAsync(async (req, res, next) => {
   if (!req.body.listing) {
     throw new AppError(400, "Listing is required");
   }
-
+  let url = req.file.path;
+  let filename = req.file.filename;
+  
   // Ensure default image is set if image field is empty
-  if (!req.body.listing.image || req.body.listing.image.trim() === "") {
-    req.body.listing.image = defaultImage;
-  }
+  // if (!req.body.listing.image || req.body.listing.image.trim() === "") {
+  //   req.body.listing.image = defaultImage;
+  // }
 
   const newListing = new Listing(req.body.listing);
+  newListing.image = {url, filename}
   newListing.owner = req.user._id;
   await newListing.save();
 

@@ -14,8 +14,11 @@ import {
   logoutUser
 } from '../controllers/listing-controllers.js';
 
+
 import validateListing from "../middlewares/validate-listing.js";
 import validateObjectIds from "../middlewares/validate-objectIds.js";
+import multer from "multer";
+import { storage } from "../configs/cloud-config.js";
 
 import { 
     isLoggedIn, 
@@ -25,7 +28,7 @@ import {
   } from "../middlewares/authentication.js";
 
 
-
+const upload = multer({ storage })
 const router = Router();
 
 // route to Get all listings
@@ -65,15 +68,21 @@ router.post(
   '/logIn', 
   saveRedirectUrl, 
   authenticateUser, 
-  loginUser); // Login User
-//pehle saveRedirectUrl execute kr rhe taki path ko save kr ske reset hone se pehle
+  loginUser); //pehle saveRedirectUrl execute kr rhe taki path ko save kr ske reset hone se pehle
 
-//route to add new listing
+
+//route to add listing
 router.post(
   '/add', 
   isLoggedIn, 
+  upload.single('listing[image]'), 
   validateListing, 
-  addListing); //to add a new listing
+  addListing,
+  (req,res)=>{
+    res.send(req.file);
+  }
+); // Add a new listing
+
 
 //route to show edit form
 router.get(

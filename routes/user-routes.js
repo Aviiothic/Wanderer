@@ -5,7 +5,6 @@ import{
 
 const router = Router({ mergeParams: true });
 
-
 router.get('/:id', getUserProfile);
 
 export default router;

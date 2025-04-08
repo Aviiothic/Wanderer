@@ -1,3 +1,4 @@
 .idx/.data
 node_modules
 api-test.http
+.env
