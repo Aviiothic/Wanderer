@@ -90,7 +90,7 @@ router.get(
   editListingForm); // Show edit form (must be before ':id')
 
 //route to update listing
-router.put(
+router.patch(
   '/:id',
   validateObjectIds('id'), 
   isLoggedIn, 

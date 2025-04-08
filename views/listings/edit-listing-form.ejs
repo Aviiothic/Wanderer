@@ -1,22 +1,26 @@
 <% layout('/layouts/boiler-plate.ejs') %>
 <%- include("../includes/flash.ejs") %>
 <body>
-    <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" class="needs-validation" novalidate >
-        <input type="text" name="title" value="<%= listing.title %>" required>
+    <form method="POST" action="/listings/<%= listing._id %>?_method=PATCH" class="needs-validation" novalidate >
+        <input type="text" name="listing[title]" value="<%= listing.title %>" required>
         <div class="invalid-feedback">Please provide a title.</div>
 
-        <input type="text" name="description" value="<%= listing.description %>" required>
+        <input type="text" name="listing[description]" value="<%= listing.description %>" required>
         <div class="invalid-feedback">Please provide a description.</div>
 
-        <input type="number" name="price" value="<%= listing.price %>" required>
+        <input type="number" name="listing[price]" value="<%= listing.price %>" required>
         <div class="invalid-feedback">Please provide the price.</div>
 
-        <input type="text" name="image" value="<%= listing.image %>" >
 
-        <input type="text" name="location" value="<%= listing.location %>" required>
+        <!-- <input type="text" name="image" value="<%= listing.image %>" > -->
+        <input type="file" id="image" name="image" class="form-control" >
+        <!--not nesting inside listing so that multer can process it correctly-->
+
+
+        <input type="text" name="listing[location]" value="<%= listing.location %>" required>
         <div class="invalid-feedback">Please provide the location of listing.</div>
 
-        <input type="text" name="country" value="<%= listing.country %>" required>
+        <input type="text" name="listing[country]" value="<%= listing.country %>" required>
         <div class="invalid-feedback">Please provide the country.</div>
 
         <button type="submit">Update Listing</button>

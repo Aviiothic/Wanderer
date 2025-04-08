@@ -16,7 +16,7 @@ const dbUrl = process.env.MONGOURL;
 //connecting to mongodb database 
 connectMongoDb(dbUrl);
 app.get('/', (req, res) => {
-  res.send('Hello World!');
+  res.render('test');
 });
 
 // app.use((req, res, next) => {

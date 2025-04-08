@@ -103,24 +103,37 @@ const updateListing = async (req, res, next) => {
   try {
     const listingId = req.params.id;
 
+    // Extract listing data
+    const updatedData = { ...req.body.listing };
+
+    // If new image uploaded, include it
+    if (req.file) {
+      updatedData.image = {
+        url: req.file.path,
+        filename: req.file.filename
+      };
+    }
+
     const updatedListing = await Listing.findByIdAndUpdate(
       listingId,
-      req.body,
+      updatedData,
       { new: true }
-    ); // new true return updated value
+    );
 
     if (!updatedListing) {
       req.flash("error", "Listing not found.");
       return res.redirect("/listings");
     }
 
-    req.flash("success", "Listing Updated! ");
+    req.flash("success", "Listing Updated!");
     res.redirect(`/listings/${updatedListing._id}`);
   } catch (error) {
-    console.error("Updating Listing :", error);
+    console.error("Updating Listing:", error);
     res.status(500).send("Internal Server Error");
   }
 };
+
+
 
 const deleteListing = async (req, res, next) => {
   try {
