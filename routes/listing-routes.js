@@ -77,10 +77,7 @@ router.post(
   isLoggedIn, 
   upload.single('listing[image]'), 
   validateListing, 
-  addListing,
-  (req,res)=>{
-    res.send(req.file);
-  }
+  addListing
 ); // Add a new listing
 
 

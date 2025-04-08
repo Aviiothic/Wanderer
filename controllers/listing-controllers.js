@@ -6,7 +6,7 @@ import wrapAsync from "../utils/wrap-async.js";
 import AppError from "../utils/error-util.js";
 
 const defaultImage =
-  "https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+  "https://res.cloudinary.com/dzl0xlxkc/image/upload/v1744113376/Default-Image_vai3sr.jpg";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -54,8 +54,8 @@ const addListing = wrapAsync(async (req, res, next) => {
   if (!req.body.listing) {
     throw new AppError(400, "Listing is required");
   }
-  let url = req.file.path;
-  let filename = req.file.filename;
+  // let url = req.file.path;
+  // let filename = req.file.filename;
   
   // Ensure default image is set if image field is empty
   // if (!req.body.listing.image || req.body.listing.image.trim() === "") {
@@ -63,7 +63,18 @@ const addListing = wrapAsync(async (req, res, next) => {
   // }
 
   const newListing = new Listing(req.body.listing);
-  newListing.image = {url, filename}
+
+  if (req.file) {
+    newListing.image = {
+      url: req.file.path,
+      filename: req.file.filename
+    };
+  } else {
+    newListing.image = {
+      url: defaultImage,
+      filename: "default-image"
+    };
+  }
   newListing.owner = req.user._id;
   await newListing.save();
 
@@ -91,9 +102,6 @@ const editListingForm = async (req, res, next) => {
 const updateListing = async (req, res, next) => {
   try {
     const listingId = req.params.id;
-    if (!req.body.image || req.body.image.trim() === "") {
-      req.body.image = defaultImage;
-    }
 
     const updatedListing = await Listing.findByIdAndUpdate(
       listingId,
@@ -146,7 +154,8 @@ const addUser = wrapAsync(async (req, res, next) => {
       return next(err);
     }
     req.flash("success", "New User Created! ");
-    res.redirect("/listings");
+    let redirectUrl = res.locals.redirectUrl || "/listings";
+    res.redirect(redirectUrl);
   });
 });
 

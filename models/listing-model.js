@@ -17,9 +17,17 @@ const listingSchema = new Schema(
       minLength: [10, "Description should not be less than 10 chars"],
       maxLength: [1200, "Description should not be more than 1200 chars"],
     },
-    image: {  //we can create an array image [{url,name}] if we want to have multiple images
-      url: String,
-      filename: String,
+    image: {
+      url: {
+        type: String,
+        //default: "https://res.cloudinary.com/your-cloud-name/image/upload/v1234567890/default_image.jpg"
+        //can use if we want to provide the default image in the model
+      },
+      filename: {
+        type: String,
+        //default: "default_image"
+      }
+    
       /*
       we are not using below code because we are handling this in our controller and hence no need to do this here
       set: (v) => (v.trim() === "" ? defaultImage : v), // Ensures empty strings become the default
