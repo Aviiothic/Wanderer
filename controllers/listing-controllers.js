@@ -12,6 +12,7 @@ const defaultImage =
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+
 //show all listings
 const showAllListings = async (req, res, next) => {
   try {
@@ -23,6 +24,7 @@ const showAllListings = async (req, res, next) => {
     next(error); //custom error handler
   }
 };
+
 
 //from now on we will use wrapAsync instead of try and catch
 
@@ -46,10 +48,12 @@ const showSingleListing = wrapAsync(async (req, res, next) => {
   res.render("listings/show-single-listing", { listing });
 });
 
+
 //form to add listings
 const addListingForm = (req, res, next) => {
   res.render("listings/add-listing-form.ejs");
 };
+
 
 //controller to add listing
 const addListing = wrapAsync(async (req, res, next) => {
@@ -86,6 +90,7 @@ const addListing = wrapAsync(async (req, res, next) => {
   //res.status(201).json({ success: true, listing: newListing }); // ✅ Sends JSON response
 });
 
+
 //aage wale me try catch hi rhne diya hu kon itna mehnat kre
 const editListingForm = async (req, res, next) => {
   try {
@@ -101,33 +106,32 @@ const editListingForm = async (req, res, next) => {
   }
 };
 
+
 //update the listing
 const updateListing = async (req, res, next) => {
   try {
     const listingId = req.params.id;
-    const oldListing = await Listing.findById(listingId);
-
-    // Extract listing data
     const updatedData = { ...req.body.listing };
 
-    // If new image uploaded, include it
+    // If a new image is uploaded
     if (req.file) {
-      //deleting the old image from cloudinary
+      // Set new image in the update object first
+      updatedData.image = {
+        url: req.file.path,
+        filename: req.file.filename,
+      };
+
+      // Then safely fetch and delete old image
+      const oldListing = await Listing.findById(listingId);
       if (
-        oldListing.image &&
-        oldListing.image.filename &&
+        oldListing?.image?.filename &&
         oldListing.image.filename !== "default-image"
       ) {
         await cloudinary.uploader.destroy(oldListing.image.filename);
-      }     
-
-      //setting the new image
-      updatedData.image = {
-        url: req.file.path,
-        filename: req.file.filename
-      };
+      }
     }
 
+    // Single DB update
     const updatedListing = await Listing.findByIdAndUpdate(
       listingId,
       updatedData,
@@ -148,7 +152,7 @@ const updateListing = async (req, res, next) => {
 };
 
 
-
+//delete the listing
 const deleteListing = async (req, res, next) => {
   try {
     const listingId = req.params.id;
@@ -165,10 +169,14 @@ const deleteListing = async (req, res, next) => {
   }
 };
 
+
+//render addUserForm
 const addUserForm = wrapAsync(async (req, res, next) => {
   res.render("users/add-user-form.ejs");
 });
 
+
+//adding user
 const addUser = wrapAsync(async (req, res, next) => {
   let { username, email, password } = req.body;
   const newUser = new User({ username, email });
@@ -186,10 +194,14 @@ const addUser = wrapAsync(async (req, res, next) => {
   });
 });
 
+
+//rendering login page
 const loginPage = (req, res, next) => {
   res.render("users/user-login.ejs");
 };
 
+
+//login user
 const loginUser = (req, res) => {
   req.flash("success", "Welcome back champ !");
   let redirectUrl = res.locals.redirectUrl || "/listings";
@@ -198,6 +210,8 @@ const loginUser = (req, res) => {
   res.redirect(redirectUrl);
 };
 
+
+//logout user
 const logoutUser = (req, res, next) => {
   req.logout((err) => {
     if (err) {
@@ -207,6 +221,7 @@ const logoutUser = (req, res, next) => {
     res.redirect("/listings");
   });
 };
+
 
 export {
   showAllListings,
