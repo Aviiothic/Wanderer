@@ -94,6 +94,7 @@ router.patch(
   '/:id',
   validateObjectIds('id'), 
   isLoggedIn, 
+  upload.single('listing[image]'), 
   validateListing, 
   isListingOwner, 
   updateListing); // Update a listing

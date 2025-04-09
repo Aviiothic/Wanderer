@@ -3,7 +3,8 @@ import AppError from "../utils/error-util.js";
 
 //middlewares to validate data coming form user side
 const validateListing = (req, res, next) => {
-    console.log(listingData);
+    const listingData = req.body.listing || req.body; // Handle both cases
+    //console.log(listingData);
     let { error } = listingSchema.validate(listingData, { abortEarly: false });
 
     if (error) {

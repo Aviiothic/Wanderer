@@ -1,7 +1,7 @@
 <% layout('/layouts/boiler-plate.ejs') %>
 <%- include("../includes/flash.ejs") %>
 <body>
-    <form method="POST" action="/listings/<%= listing._id %>?_method=PATCH" class="needs-validation" novalidate >
+    <form method="POST" action="/listings/<%= listing._id %>?_method=PATCH" class="needs-validation" novalidate enctype="multipart/form-data" >
         <input type="text" name="listing[title]" value="<%= listing.title %>" required>
         <div class="invalid-feedback">Please provide a title.</div>
 
@@ -12,10 +12,9 @@
         <div class="invalid-feedback">Please provide the price.</div>
 
 
-        <!-- <input type="text" name="image" value="<%= listing.image %>" > -->
-        <input type="file" id="image" name="image" class="form-control" >
-        <!--not nesting inside listing so that multer can process it correctly-->
-
+        <!-- <input type="text" name="listing[image]" value="<%= listing.image %>" > -->
+        <input type="file" id="image" name="listing[image]" class="form-control" >
+        
 
         <input type="text" name="listing[location]" value="<%= listing.location %>" required>
         <div class="invalid-feedback">Please provide the location of listing.</div>

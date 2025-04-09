@@ -4,6 +4,7 @@ import Listing from "../models/listing-model.js";
 import User from "../models/user-model.js";
 import wrapAsync from "../utils/wrap-async.js";
 import AppError from "../utils/error-util.js";
+import { cloudinary } from "../configs/cloud-config.js";
 
 const defaultImage =
   "https://res.cloudinary.com/dzl0xlxkc/image/upload/v1744113376/Default-Image_vai3sr.jpg";
@@ -50,6 +51,7 @@ const addListingForm = (req, res, next) => {
   res.render("listings/add-listing-form.ejs");
 };
 
+//controller to add listing
 const addListing = wrapAsync(async (req, res, next) => {
   if (!req.body.listing) {
     throw new AppError(400, "Listing is required");
@@ -99,15 +101,27 @@ const editListingForm = async (req, res, next) => {
   }
 };
 
+//update the listing
 const updateListing = async (req, res, next) => {
   try {
     const listingId = req.params.id;
+    const oldListing = await Listing.findById(listingId);
 
     // Extract listing data
     const updatedData = { ...req.body.listing };
 
     // If new image uploaded, include it
     if (req.file) {
+      //deleting the old image from cloudinary
+      if (
+        oldListing.image &&
+        oldListing.image.filename &&
+        oldListing.image.filename !== "default-image"
+      ) {
+        await cloudinary.uploader.destroy(oldListing.image.filename);
+      }     
+
+      //setting the new image
       updatedData.image = {
         url: req.file.path,
         filename: req.file.filename
