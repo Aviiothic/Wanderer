@@ -24,7 +24,9 @@ import {
     isLoggedIn, 
     authenticateUser, 
     saveRedirectUrl, 
-    isListingOwner 
+    isListingOwner,
+    redirectIfLoggedIn,
+    preventLoginIfAuthenticated
   } from "../middlewares/authentication.js";
 
 
@@ -38,12 +40,15 @@ router.get(
 
 // route to show SignUp User Form
 router.get(
-  '/signup', 
+  '/signup',
+  redirectIfLoggedIn, 
   addUserForm);
 
 // route to signup user
 router.post(
   '/signUp',
+  preventLoginIfAuthenticated,
+  saveRedirectUrl,
   addUser);
 
 // route to  Show form to add a new listing
@@ -54,7 +59,8 @@ router.get(
 
 // route to show login page
 router.get(
-  '/login', 
+  '/login',
+  redirectIfLoggedIn,
   loginPage); 
 
 // route to logout user
@@ -66,6 +72,7 @@ router.get(
 //route to login user
 router.post(
   '/logIn', 
+  preventLoginIfAuthenticated,
   saveRedirectUrl, 
   authenticateUser, 
   loginUser); //pehle saveRedirectUrl execute kr rhe taki path ko save kr ske reset hone se pehle
@@ -73,7 +80,7 @@ router.post(
 
 //route to add listing
 router.post(
-  '/add', 
+  '/add',
   isLoggedIn, 
   upload.single('listing[image]'), 
   validateListing, 

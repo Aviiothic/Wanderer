@@ -1,28 +1,36 @@
 <% layout('/layouts/boiler-plate.ejs') %>
 <%- include("../includes/flash.ejs") %>
-<body>
-    <form method="POST" action="/listings/<%= listing._id %>?_method=PATCH" class="needs-validation" novalidate enctype="multipart/form-data" >
-        <input type="text" name="listing[title]" value="<%= listing.title %>" required>
-        <div class="invalid-feedback">Please provide a title.</div>
 
-        <input type="text" name="listing[description]" value="<%= listing.description %>" required>
-        <div class="invalid-feedback">Please provide a description.</div>
+        <body>
+            <form method="POST" action="/listings/<%= listing._id %>?_method=PATCH" class="needs-validation" novalidate
+                enctype="multipart/form-data">
+                <input type="text" name="listing[title]" value="<%= listing.title %>" required>
+                <div class="invalid-feedback">Please provide a title.</div>
 
-        <input type="number" name="listing[price]" value="<%= listing.price %>" required>
-        <div class="invalid-feedback">Please provide the price.</div>
+                <input type="text" name="listing[description]" value="<%= listing.description %>" required>
+                <div class="invalid-feedback">Please provide a description.</div>
+
+                <input type="number" name="listing[price]" value="<%= listing.price %>" required>
+                <div class="invalid-feedback">Please provide the price.</div>
 
 
-        <!-- <input type="text" name="listing[image]" value="<%= listing.image %>" > -->
-        <input type="file" id="image" name="listing[image]" class="form-control" >
-        
+                <!-- <input type="text" name="listing[image]" value="<%= listing.image %>" > -->
+                <input type="file" id="image" name="listing[image]" class="form-control">
 
-        <input type="text" name="listing[location]" value="<%= listing.location %>" required>
-        <div class="invalid-feedback">Please provide the location of listing.</div>
+                <!--Preview Section-->
+                <img id="imagePreview" src="<%= listing.image?.previewUrl %>"
+                    alt="Preview" class="img-thumbnail" style="max-width: 250px;">
 
-        <input type="text" name="listing[country]" value="<%= listing.country %>" required>
-        <div class="invalid-feedback">Please provide the country.</div>
 
-        <button type="submit">Update Listing</button>
-    </form>
-</body>
-</html>
+                <input type="text" name="listing[location]" value="<%= listing.location %>" required>
+                <div class="invalid-feedback">Please provide the location of listing.</div>
+
+                <input type="text" name="listing[country]" value="<%= listing.country %>" required>
+                <div class="invalid-feedback">Please provide the country.</div>
+
+                <button type="submit">Update Listing</button>
+            </form>
+            <script src="/js/validate-image.js"></script>
+        </body>
+
+        </html>

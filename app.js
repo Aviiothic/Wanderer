@@ -5,6 +5,7 @@ import reviewRoutes from './routes/review-routes.js';
 import userRoutes from './routes/user-routes.js';
 import applyCommonMiddlewares from './middlewares/common-middlewares.js';
 import { notFoundHandler, globalErrorHandler } from './middlewares/error-handler.js';
+import captureReturnTo from './middlewares/capture-return-to.js';
 
 const app = express();
 applyCommonMiddlewares(app);
@@ -27,6 +28,8 @@ app.get('/', (req, res) => {
 //quite helpful in debugging
 
 
+
+app.use(captureReturnTo()); //storing paths of previous page
 app.use('/listings', listingRoutes);  // Mount listing routes
 app.use('/listings/user', userRoutes);  // Mount user routes
 app.use('/listings/:id/reviews', reviewRoutes); //mounting review routes

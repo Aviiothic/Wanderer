@@ -12,7 +12,6 @@ const defaultImage =
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
 //show all listings
 const showAllListings = async (req, res, next) => {
   try {
@@ -25,7 +24,6 @@ const showAllListings = async (req, res, next) => {
   }
 };
 
-
 //from now on we will use wrapAsync instead of try and catch
 
 //show particlular listing with id
@@ -33,12 +31,13 @@ const showSingleListing = wrapAsync(async (req, res, next) => {
   const listingId = req.params.id;
   const listing = await Listing.findById(listingId)
     .populate("owner")
-    .populate({path: "reviews",
+    .populate({
+      path: "reviews",
       populate: {
         path: "author",
-        model: "User"
-      }
-    });// populate reviews with author
+        model: "User",
+      },
+    }); // populate reviews with author
 
   if (!listing) {
     //return res.status(404).send('Listing not found');
@@ -48,12 +47,10 @@ const showSingleListing = wrapAsync(async (req, res, next) => {
   res.render("listings/show-single-listing", { listing });
 });
 
-
 //form to add listings
 const addListingForm = (req, res, next) => {
   res.render("listings/add-listing-form.ejs");
 };
-
 
 //controller to add listing
 const addListing = wrapAsync(async (req, res, next) => {
@@ -62,7 +59,7 @@ const addListing = wrapAsync(async (req, res, next) => {
   }
   // let url = req.file.path;
   // let filename = req.file.filename;
-  
+
   // Ensure default image is set if image field is empty
   // if (!req.body.listing.image || req.body.listing.image.trim() === "") {
   //   req.body.listing.image = defaultImage;
@@ -73,12 +70,12 @@ const addListing = wrapAsync(async (req, res, next) => {
   if (req.file) {
     newListing.image = {
       url: req.file.path,
-      filename: req.file.filename
+      filename: req.file.filename,
     };
   } else {
     newListing.image = {
       url: defaultImage,
-      filename: "default-image"
+      filename: "default-image",
     };
   }
   newListing.owner = req.user._id;
@@ -90,7 +87,6 @@ const addListing = wrapAsync(async (req, res, next) => {
   //res.status(201).json({ success: true, listing: newListing }); // ✅ Sends JSON response
 });
 
-
 //aage wale me try catch hi rhne diya hu kon itna mehnat kre
 const editListingForm = async (req, res, next) => {
   try {
@@ -99,13 +95,25 @@ const editListingForm = async (req, res, next) => {
     if (!listing) {
       return res.status(404).send("Listing not found");
     }
+
+    // Optimize image preview
+    let originalImageUrl = listing.image.url;
+    if (originalImageUrl.includes("/upload/")) {
+      originalImageUrl = originalImageUrl.replace(
+        "/upload/",
+        "/upload/w_300,q_60,f_auto/"
+      );
+    }
+
+    // Attach optimized URL to listing for frontend use
+    listing.image.previewUrl = originalImageUrl;
+
     res.render("listings/edit-listing-form", { listing });
   } catch (error) {
-    console.error("Error Showing Listing :", error);
+    console.error("Error Showing Listing:", error);
     res.status(500).send("Internal Server Error");
   }
 };
-
 
 //update the listing
 const updateListing = async (req, res, next) => {
@@ -151,7 +159,6 @@ const updateListing = async (req, res, next) => {
   }
 };
 
-
 //delete the listing
 const deleteListing = async (req, res, next) => {
   try {
@@ -169,12 +176,15 @@ const deleteListing = async (req, res, next) => {
   }
 };
 
-
 //render addUserForm
 const addUserForm = wrapAsync(async (req, res, next) => {
+  if (req.isAuthenticated()) {
+    req.flash("info", "You are already logged in.");
+    let redirectUrl = res.locals.redirectUrl || "/listings";
+    return res.redirect(redirectUrl); // or your dashboard/listings
+  }
   res.render("users/add-user-form.ejs");
 });
-
 
 //adding user
 const addUser = wrapAsync(async (req, res, next) => {
@@ -190,26 +200,36 @@ const addUser = wrapAsync(async (req, res, next) => {
     }
     req.flash("success", "New User Created! ");
     let redirectUrl = res.locals.redirectUrl || "/listings";
+
+    delete req.session.redirectUrl;
+    //maintiang good hygiene deleteing after use to prevent unexpected redirects
+
     res.redirect(redirectUrl);
   });
 });
 
-
 //rendering login page
 const loginPage = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    req.flash("info", "You are already logged in.");
+    let redirectUrl = res.locals.redirectUrl || "/listings";
+    return res.redirect(redirectUrl); // or your dashboard/listings
+  }
   res.render("users/user-login.ejs");
 };
-
 
 //login user
 const loginUser = (req, res) => {
   req.flash("success", "Welcome back champ !");
   let redirectUrl = res.locals.redirectUrl || "/listings";
+
   //agar undefined hua ya pehle se hi logged in hai to /listings pe jayega login krne pe
   //console.log(redirectUrl);
+  delete req.session.redirectUrl;
+  //maintiang good hygiene deleteing after use to prevent unexpected redirects
+
   res.redirect(redirectUrl);
 };
-
 
 //logout user
 const logoutUser = (req, res, next) => {
@@ -221,7 +241,6 @@ const logoutUser = (req, res, next) => {
     res.redirect("/listings");
   });
 };
-
 
 export {
   showAllListings,
