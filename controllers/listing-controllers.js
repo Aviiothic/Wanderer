@@ -79,6 +79,12 @@ const addListing = wrapAsync(async (req, res, next) => {
     };
   }
   newListing.owner = req.user._id;
+  newListing.geometry = {
+    type: "Point",
+    coordinates: [req.coordinates.longitude, req.coordinates.latitude],
+  };
+  
+
   await newListing.save();
 
   req.flash("success", "New Listing Created! ");

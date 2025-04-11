@@ -1,5 +1,11 @@
 <% layout('/layouts/boiler-plate.ejs') %>
-  <%- include("../includes/flash.ejs") %>
+<%- include("../includes/flash.ejs") %>
+<script>
+  const mapToken = "<%= process.env.MAP_TOKEN %>";
+  const coordinates = <%- JSON.stringify(listing.geometry.coordinates) %>;
+  //ignore warnings for above line as vscode is treating this file as .js file
+</script>
+
 
     <body>
       <div class="main-container">
@@ -27,39 +33,50 @@
                 <button class="btn btn-danger">Delete Listing</button>
               </form>
             </div>
-          <% } %>
+            <% } %>
         </div>
 
-        <hr>
 
         <div>
-          <h4 style="text-align: center; margin-bottom: 20px;">All Reviews</h4>
-          <div class="row justify-content-center g-4">
-            <% listing.reviews.forEach(function (review) { %>
-              <div class="col-md-4 d-flex">
-                <div class="card flex-fill">
-                  <div class="card-body">
-                    <h5 class="card-title ms-2">@<%=review.author.username%></h5>
-                    <p class="starability-result card-text ms-2" data-rating="<%= review.rating %>">
-                    </p>
-                    <p class="card-text ms-2">
-                      <%= review.comment %>
-                    </p>
-                    <!-- <p class="card-text ms-2">Rating: <%= review.rating %> Stars</p> -->
+          <% if (listing.reviews.length> 0) { %>
+            <hr>
+            <h4 style="text-align: center; margin-bottom: 15px;">All Reviews</h4>
+            <div class="row justify-content-center g-4">
+              <% listing.reviews.forEach(function (review) { %>
+                <div class="col-md-4 mb-3 d-flex">
+                  <div class="card flex-fill">
+                    <div class="card-body">
+                      <h5 class="card-title ms-2">@<%=review.author.username%>
+                      </h5>
+                      <p class="starability-result card-text ms-2" data-rating="<%= review.rating %>">
+                      </p>
+                      <p class="card-text ms-2">
+                        <%= review.comment %>
+                      </p>
+                      <!-- <p class="card-text ms-2">Rating: <%= review.rating %> Stars</p> -->
+                    </div>
+                    <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                      <button class="btn btn-danger card-btn">Delete
+                    </form>
                   </div>
-                  <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
-                    <button class="btn btn-danger card-btn">Delete
-                  </form>
                 </div>
-              </div>
-              <% }) %>
-          </div>
+                <% }) %>
+            </div>
+            <% } %>
         </div>
+      </div>
+
+      <div class="col-10 offset-2 mb-3">
+        <h3>Where You'll Be</h3>
+        <div id="map"></div>
       </div>
 
       <% if(currUser) { %>
-      <div class="containerSl">
-        <%- include("../includes/review-form") %>
-      </div>
-      <% } %>
+        <div class="containerSl">
+          <%- include("../includes/review-form") %>
+        </div>
+        <% } %>
+        <script src="/js/map.js"></script>
     </body>
+
+    

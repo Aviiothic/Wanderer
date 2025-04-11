@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
 import Listing from "./models/listing-model.js";
+import Review from "./models/review-model.js";
+import User from "./models/user-model.js"
+
 import connectMongoDb from "./configs/database-connection.js";
 
 const dbUrl = "mongodb://localhost:27017/wanderer";
-
-// Connect to MongoDB
 connectMongoDb(dbUrl);
 
 const sampleListings = [
@@ -14,6 +15,7 @@ const sampleListings = [
     price: 1200,
     location: "Manhattan",
     country: "USA",
+    geometry: { type: "Point", coordinates: [-73.9712, 40.7831] },
     image: {
       url: "https://images.unsplash.com/photo-1606046604972-77cc76aee944?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       filename: "listing-img-1"
@@ -26,6 +28,7 @@ const sampleListings = [
     price: 1500,
     location: "Los Angeles",
     country: "USA",
+    geometry: { type: "Point", coordinates: [-118.2437, 34.0522] },
     image: {
       url: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       filename: "listing-img-2"
@@ -38,6 +41,7 @@ const sampleListings = [
     price: 2500,
     location: "Miami",
     country: "USA",
+    geometry: { type: "Point", coordinates: [-80.1918, 25.7617] },
     image: {
       url: "https://images.unsplash.com/photo-1535827841776-24afc1e255ac?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       filename: "listing-img-3"
@@ -50,6 +54,7 @@ const sampleListings = [
     price: 5000,
     location: "Palm Jumeirah",
     country: "UAE",
+    geometry: { type: "Point", coordinates: [55.1364, 25.1120] },
     image: {
       url: "https://images.unsplash.com/photo-1549294413-26f195200c16?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       filename: "listing-img-4"
@@ -62,6 +67,7 @@ const sampleListings = [
     price: 800,
     location: "Colorado",
     country: "USA",
+    geometry: { type: "Point", coordinates: [-105.7821, 39.5501] },
     image: {
       url: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       filename: "listing-img-5"
@@ -74,6 +80,7 @@ const sampleListings = [
     price: 4000,
     location: "London",
     country: "UK",
+    geometry: { type: "Point", coordinates: [-0.1276, 51.5072] },
     image: {
       url: "https://images.unsplash.com/photo-1575403071235-5dcd06cbf169?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       filename: "listing-img-6"
@@ -86,6 +93,7 @@ const sampleListings = [
     price: 1200,
     location: "Kyoto",
     country: "Japan",
+    geometry: { type: "Point", coordinates: [135.7681, 35.0116] },
     image: {
       url: "https://images.unsplash.com/photo-1430285561322-7808604715df?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       filename: "listing-img-7"
@@ -98,6 +106,7 @@ const sampleListings = [
     price: 1000,
     location: "Texas",
     country: "USA",
+    geometry: { type: "Point", coordinates: [-99.9018, 31.9686] },
     image: {
       url: "https://images.unsplash.com/photo-1571055107559-3e67626fa8be?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       filename: "listing-img-8"
@@ -110,6 +119,7 @@ const sampleListings = [
     price: 1800,
     location: "Aspen",
     country: "USA",
+    geometry: { type: "Point", coordinates: [-106.8175, 39.1911] },
     image: {
       url: "https://images.unsplash.com/photo-1604601638406-edc29b54dcf7?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       filename: "listing-img-9"
@@ -122,6 +132,7 @@ const sampleListings = [
     price: 1100,
     location: "Canada",
     country: "Canada",
+    geometry: { type: "Point", coordinates: [-106.3468, 56.1304] },
     image: {
       url: "https://plus.unsplash.com/premium_photo-1683586218149-e3b33ff9c02a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       filename: "listing-img-10"
@@ -130,21 +141,99 @@ const sampleListings = [
   }
 ];
 
-// Seed function
+const dummyUsers = [
+  { username: "Anupam", email: "anupam@gmail.com", password: "Anupam@123"},
+  { username: "alice123", email: "alice@example.com", password: "pass123" },
+  { username: "bob456", email: "bob@example.com", password: "pass123" },
+  { username: "charlie789", email: "charlie@example.com", password: "pass123" },
+  { username: "david012", email: "david@example.com", password: "pass123" }
+];
+
+const sampleComments = [
+  "Great place to stay!",
+  "Very clean and well located.",
+  "Had an amazing experience.",
+  "Would love to visit again!",
+  "Highly recommend this listing.",
+  "The room was spacious and comfortable.",
+  "Perfect location near public transport.",
+  "Host was friendly and helpful throughout.",
+  "Quiet neighborhood and safe surroundings.",
+  "Clean bathroom and fresh linens provided.",
+  "Wi-Fi was fast and reliable.",
+  "Kitchen was well equipped for cooking.",
+  "Mattress was a bit firm but okay.",
+  "Walls were a bit thin, could hear neighbors.",
+  "Check-in took longer than expected.",
+  "Not as clean as shown in the pictures.",
+  "The location was noisy at night.",
+  "Bathroom had a plumbing issue.",
+  "Felt overpriced for what it offered.",
+  "Wouldn’t recommend for a long stay."
+];
+
+
 const seedDB = async () => {
   try {
+    // Clear existing data
+    await User.deleteMany();
     await Listing.deleteMany();
-    console.log("Existing listings deleted");
+    await Review.deleteMany();
 
-    await Listing.insertMany(sampleListings);
-    console.log("Sample listings added successfully");
+    // Register users
+    const createdUsers = [];
+    for (const u of dummyUsers) {
+      const newUser = new User({ email: u.email, username: u.username });
+      const registeredUser = await User.register(newUser, u.password);
+      createdUsers.push(registeredUser);
+    }
+    console.log("✅ Users registered");
 
+    // Insert listings
+    const listingsWithOwner = sampleListings.map((listing) => {
+      const randomOwner = createdUsers[Math.floor(Math.random() * createdUsers.length)];
+      return { ...listing, owner: randomOwner._id };
+    });
+    const createdListings = await Listing.insertMany(listingsWithOwner);
+    console.log("✅ Listings created");
+
+    // Create and associate reviews
+    const reviews = [];
+
+    for (let listing of createdListings) {
+      const reviewCount = Math.floor(Math.random() * 3) + 3; // 3-5 reviews
+      const reviewIds = [];
+
+      for (let i = 0; i < reviewCount; i++) {
+        const randomUser = createdUsers[Math.floor(Math.random() * createdUsers.length)];
+        const randomComment = sampleComments[Math.floor(Math.random() * sampleComments.length)];
+        const randomRating = Math.floor(Math.random() * 3) + 3; // 3-5
+
+        const review = new Review({
+          rating: randomRating,
+          comment: randomComment,
+          author: randomUser._id,
+          listing: listing._id,
+        });
+
+        await review.save();
+        reviewIds.push(review._id);
+      }
+
+      // Push review IDs into listing and save it
+      listing.reviews.push(...reviewIds);
+      await listing.save();
+    }
+
+    console.log("✅ Reviews created and linked to listings");
     mongoose.connection.close();
-    console.log("Database connection closed");
-  } catch (error) {
-    console.error("Error seeding database:", error);
+    console.log("🌱 Seeding complete. Connection closed.");
+  } catch (err) {
+    console.error("❌ Error during seeding:", err.message);
+    mongoose.connection.close();
   }
 };
 
-// Run seeding
+
+
 seedDB();

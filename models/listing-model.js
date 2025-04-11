@@ -3,6 +3,7 @@ import { Schema, model } from "mongoose";
 import Review from "./review-model.js";
 
 
+
 const listingSchema = new Schema(
   {
     title: {
@@ -55,10 +56,27 @@ const listingSchema = new Schema(
     owner: {
       type: Schema.Types.ObjectId,
       ref: "User",
+    },
+    //geoJSON format
+    geometry:{
+      type:{
+        type:String,
+        enum:['Point'],
+        required:true
+      },
+      coordinates:{
+        type:[Number],
+        required:true
+      }
     }
   },
   { timestamps: true }
 );
+
+// ✅ Create a 2dsphere index for geospatial queries
+listingSchema.index({ geometry: '2dsphere' });
+
+
 
 //defining middleware to delete reviews related with the listing
 

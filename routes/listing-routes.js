@@ -29,6 +29,7 @@ import {
     preventLoginIfAuthenticated
   } from "../middlewares/authentication.js";
 
+import getCoordinates from "../middlewares/get-coordinates.js";
 
 const upload = multer({ storage })
 const router = Router();
@@ -83,7 +84,8 @@ router.post(
   '/add',
   isLoggedIn, 
   upload.single('listing[image]'), 
-  validateListing, 
+  validateListing,
+  getCoordinates, 
   addListing
 ); // Add a new listing
 
