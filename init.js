@@ -141,13 +141,7 @@ const sampleListings = [
   }
 ];
 
-const dummyUsers = [
-  { username: "Anupam", email: "anupam@gmail.com", password: "Anupam@123"},
-  { username: "alice123", email: "alice@example.com", password: "pass123" },
-  { username: "bob456", email: "bob@example.com", password: "pass123" },
-  { username: "charlie789", email: "charlie@example.com", password: "pass123" },
-  { username: "david012", email: "david@example.com", password: "pass123" }
-];
+
 
 const sampleComments = [
   "Great place to stay!",
