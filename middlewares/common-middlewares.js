@@ -26,7 +26,7 @@ const publicPath = path.join(__dirname, '..', 'public');
 const store = MongoStore.create({
     mongoUrl: process.env.MONGO_ATLAS_URL,
     crypto: {
-        secret: 'mysecretcode'
+        secret: process.env.SECRET,
     },
     collectionName: 'sessions',
     touchAfter: 24 * 60 * 60,
@@ -39,7 +39,7 @@ store.on("error", ()=>{
 
 const sessionOptions = {
     store,
-    secret: 'mysecretcode',
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {
