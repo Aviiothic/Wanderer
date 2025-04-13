@@ -1,20 +1,45 @@
+<style>
+  .btn-search {
+    background-color: #fe424d;
+    color:white;
+  }
+  .btn-search:hover{
+    background-color: #fe424d;
+    color:white;
+  }
+</style>
+
 <nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
   <div class="container-fluid">
     <a class="navbar-brand md" href="/listings"><i class="fa-regular fa-compass"></i></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" >
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <a class="nav-link" href="/listings">Explore</a>        
       </div>
 
       <div class="navbar-nav ms-auto">
+        <div class="d-flex align-items-center">
+          <!-- Search input -->
+          <input type="text" class="form-control rounded-pill me-2" placeholder="Search"
+                 style="height: 45px; width: 300px;">
+        
+          <!-- Search button -->
+          <button class="btn btn-search rounded-pill d-flex align-items-center justify-content-center"
+                  style="height: 45px; padding: 0 0px;">
+            <i class="fa-solid fa-magnifying-glass me-3"></i> Search
+          </button>
+        </div>
+      </div>
+
+      <div class="navbar-nav ms-auto">
         <a class="nav-link" href="/listings/new">Add Listing</a>
-        <% if(!currUser) { %>
+        <% if (!currUser) { %>
           <a class="nav-link" href="/listings/login"><b>Log In</b></a>
           <a class="nav-link" href="/listings/signup"><b>Sign Up</b></a>
-          
         <% } else { %>
           <a class="nav-link" href="/listings/logout"><b>Log Out</b></a>
         <% } %>

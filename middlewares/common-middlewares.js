@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url'; // Import required for __dirname equivalent
 import methodOverride from 'method-override';
 import ejsMate from 'ejs-mate';
 import session from 'express-session';
+import MongoStore from 'connect-mongo';
 import flash from 'express-flash';
 import flashMiddleware from './flash-middleware.js';
 import './passport-config.js';  // configures the singleton instance, runs the file instead of importing in one variable
@@ -21,7 +22,23 @@ passport, because it’s singleton in property.”
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const publicPath = path.join(__dirname, '..', 'public');
+
+const store = MongoStore.create({
+    mongoUrl: process.env.MONGO_ATLAS_URL,
+    crypto: {
+        secret: 'mysecretcode'
+    },
+    collectionName: 'sessions',
+    touchAfter: 24 * 60 * 60,
+
+})
+
+store.on("error", ()=>{
+    console.log("Error in Mongo Session Store");
+})
+
 const sessionOptions = {
+    store,
     secret: 'mysecretcode',
     resave: false,
     saveUninitialized: true,
@@ -31,6 +48,8 @@ const sessionOptions = {
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }
+
+
 
 function applyCommonMiddlewares(app) {
     app.set('view engine', 'ejs');  // Enable server-side rendering with EJS

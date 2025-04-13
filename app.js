@@ -12,7 +12,7 @@ applyCommonMiddlewares(app);
 
 
 //const dbUrl = 'mongodb://localhost:27017/wanderer';
-const dbUrl = process.env.MONGOURL;
+const dbUrl = process.env.MONGO_ATLAS_URL;
 
 //connecting to mongodb database 
 connectMongoDb(dbUrl);

@@ -1,35 +1,140 @@
 <% layout('/layouts/boiler-plate.ejs') %>
-    <%- include("../includes/flash.ejs") %>
+<%- include("../includes/flash.ejs") %>
+<style>
+    #filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        align-items:center;
+    }
 
-        <body>
-            <div class="container mt-4">
-                <!-- <h1 class="text-center mb-4">All Listings</h1> -->
-                <div id="filters">
-                    <div class="filter">
+    .filter{
+        text-align: center;
+        /* margin-right: 1rem; */
+        opacity: 0.7;
+    }
 
-                    </div>
-                </div>
-                <% if (allListings.length> 0) { %>
-                    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 ">
-                        <% allListings.forEach(listing=> { %>
-                            <a href="/listings/<%= listing._id %>" class="text-decoration-none">
-                                <div class="card col listing-card">
-                                    <img src="<%= listing.image.url %>" class="card-img-top" alt="<%= listing.title %>"
-                                        style="height:20rem">
-                                    <div class="card-body">
-                                        <p class="card-text">
-                                            <b>
-                                                <%= listing.title %>
-                                            </b><br>
-                                            &#8377; <%= listing.price.toLocaleString('en-IN') %>/night
-                                        </p>
-                                    </div>
-                                </div>
-                            </a>
-                <% }) %>
-                    </div>
-                <% } else { %>
-                    <p class="text-center">No listings available.</p>
-                <% } %>
+    .filter:hover{
+        opacity: 1;
+        cursor: pointer;
+    }
+
+    .filter p {
+        font-size: 0.8rem;
+    }
+
+    .taxInfo {
+        display: none;
+    }
+
+    /* .tax-toggle {
+        border: 1px solid black;
+        border-radius: 0.8rem;
+        height: 3rem;
+        padding: 1rem;
+        margin-bottom: 10px;
+    } */
+
+    .tax-toggle {
+  display: flex;
+  align-items: center;  /* Vertical center */
+  justify-content: space-between; /* Space between text and toggle */
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 8px 12px;
+  width: fit-content;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  opacity: 0.9;
+}
+
+
+
+</style>
+
+
+<body>
+    <div class="container mt-4">
+        <!-- <h1 class="text-center mb-4">All Listings</h1> -->
+        <div id="filters">
+            <div class="filter">
+                <div><i class="fa-solid fa-fire"></i></div>
+                <p>Trending</p>
             </div>
-        </body>
+            <div class="filter">
+                <div><i class="fa-solid fa-fire"></i></div>
+                <p>Trending</p>
+            </div>
+            <div class="filter">
+                <div><i class="fa-solid fa-fire"></i></div>
+                <p>Trending</p>
+            </div>
+            <div class="filter">
+                <div><i class="fa-solid fa-fire"></i></div>
+                <p>Trending</p>
+            </div>
+            <div class="filter">
+                <div><i class="fa-solid fa-fire"></i></div>
+                <p>Trending</p>
+            </div>
+            <div class="filter">
+                <div><i class="fa-solid fa-fire"></i></div>
+                <p>Trending</p>
+            </div>
+            <div class="filter">
+                <div><i class="fa-solid fa-fire"></i></div>
+                <p>Trending</p>
+            </div>
+            <div class="filter">
+                <div><i class="fa-solid fa-fire"></i></div>
+                <p>Trending</p>
+            </div>
+
+            <div class="tax-toggle">
+                <div class="form-check-reverse form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+                    <label class="form-check-label" for="switchCheckDefault">Default Price After Taxes</label>
+                  </div>
+            </div>
+        </div>
+
+        <% if (allListings.length> 0) { %>
+            <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 ">
+                <% allListings.forEach(listing=> { %>
+                    <a href="/listings/<%= listing._id %>" class="text-decoration-none">
+                        <div class="card col listing-card">
+                            <img src="<%= listing.image.url %>" class="card-img-top" alt="<%= listing.title %>"
+                                style="height:20rem">
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <b>
+                                        <%= listing.title %>
+                                    </b><br>
+                                    &#8377; <%= listing.price.toLocaleString('en-IN') %>/night
+                                    <i class="taxInfo">&nbsp; +18% GST</i>
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                    <% }) %>
+            </div>
+            <% } else { %>
+                <p class="text-center">No listings available.</p>
+                <% } %>
+    </div>
+</body>
+
+<script>
+    let taxSwitch = document.getElementById("switchCheckDefault");
+    taxSwitch.addEventListener("click", ()=>{
+        let taxInfo = document.getElementsByClassName("taxInfo");
+        for(info of taxInfo){
+            if(info.style.display != "inline"){
+                info.style.display = "inline";
+            }else{
+                info.style.display = "none";
+            }
+        }
+    })
+</script>
